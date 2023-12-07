@@ -20,7 +20,7 @@ export function ChatRoom() {
 
   const sendMessage = async (e) => {
     e.preventDefault();
-    // auth.currentUser 하면 유저 정보가 나온다.
+    // auth.currentUser 하면 유저 정보를 가져온다.
     const { uid, photoURL } = auth.currentUser;
 
     await addDoc(messagesRef, {
@@ -33,12 +33,14 @@ export function ChatRoom() {
     setFormValue(""); // 메세지 전송 후 입력값을 리셋
   };
 
+  // 채팅 메세지가 자동으로 스크롤 메세지로 내려간다.
   useEffect(() => {
     dummy.current.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   return (
     <>
+      {/* main은 메세지가 나오는 화면 */}
       <main>
         {messages &&
           messages.map((msg, idx) => <ChatMessage key={idx} message={msg} />)}
@@ -62,7 +64,8 @@ export function ChatRoom() {
 }
 // 채팅 메세지 표시
 function ChatMessage(props) {
-  const { text, uid, photoURL } = props.message;
+  const { text, uid, photoURL } = props.message; // 메세지 객체 분리
+  // uid가 유저와 같으면 내가 쓴 메세지 sent, 다른 사람 메세지 received
   const messageClass = uid === auth.currentUser.uid ? "sent" : "received";
 
   return (
