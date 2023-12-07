@@ -23,6 +23,8 @@ export function ChatRoom() {
     // auth.currentUser 하면 유저 정보를 가져온다.
     const { uid, photoURL, displayName } = auth.currentUser;
 
+    // 현재 시간을 가져와 메세지와 함께 저장
+    const createdAt = serverTimestamp(); // createdAt 추가
     await addDoc(messagesRef, {
       text: formValue,
       createdAt: serverTimestamp(),
@@ -64,7 +66,7 @@ export function ChatRoom() {
 }
 // 채팅 메세지 표시
 function ChatMessage(props) {
-  const { text, uid, photoURL } = props.message; // 메세지 객체 분리
+  const { text, uid, photoURL, createdAt } = props.message; // 메세지 객체 분리
   // uid가 유저와 같으면 내가 쓴 메세지 sent, 다른 사람 메세지 received
   const messageClass = uid === auth.currentUser.uid ? "sent" : "received";
 
@@ -81,6 +83,11 @@ function ChatMessage(props) {
 
   const [displayName, setDisplayName] = useState(getDisplayName());
 
+  // createdAt을 표시할 형식으로 포맷팅
+  const formattedTime = createdAt
+    ? new Date(createdAt.seconds * 1000).toLocaleTimeString()
+    : "";
+
   return (
     <>
       <div className={`message ${messageClass}`}>
@@ -90,7 +97,7 @@ function ChatMessage(props) {
           }
         />
         <p>
-          <strong>{displayName}</strong>: {text}
+          <strong>{displayName}</strong>: {text} ({formattedTime})
         </p>
       </div>
     </>
