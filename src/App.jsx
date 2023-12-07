@@ -66,4 +66,4 @@ function SignOut() {
     </button>
   );
 }
-export default App();
+export default App;
