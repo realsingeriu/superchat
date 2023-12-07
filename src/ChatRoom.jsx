@@ -21,7 +21,7 @@ export function ChatRoom() {
   const sendMessage = async (e) => {
     e.preventDefault();
     // auth.currentUser 하면 유저 정보를 가져온다.
-    const { uid, photoURL } = auth.currentUser;
+    const { uid, photoURL, displayName } = auth.currentUser;
 
     await addDoc(messagesRef, {
       text: formValue,
@@ -68,6 +68,19 @@ function ChatMessage(props) {
   // uid가 유저와 같으면 내가 쓴 메세지 sent, 다른 사람 메세지 received
   const messageClass = uid === auth.currentUser.uid ? "sent" : "received";
 
+  // 사용자의 디스플레이 이름 가져오기
+  const getDisplayName = () => {
+    const googleProvider = auth.currentUser.providerData.find(
+      (provider) => provider.providerId === "google.com"
+    );
+
+    return googleProvider
+      ? googleProvider.displayName
+      : auth.currentUser.displayName || uid;
+  };
+
+  const [displayName, setDisplayName] = useState(getDisplayName());
+
   return (
     <>
       <div className={`message ${messageClass}`}>
@@ -76,7 +89,9 @@ function ChatMessage(props) {
             photoURL || "https://api.adorable.io/avatars/23/abott@adorable.png"
           }
         />
-        <p>{text}</p>
+        <p>
+          <strong>{displayName}</strong>: {text}
+        </p>
       </div>
     </>
   );

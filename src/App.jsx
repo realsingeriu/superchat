@@ -56,7 +56,7 @@ function App() {
               />
               {showProfileInfo && (
                 <div className="user-info">
-                  <p>사용자 아이디: {user.displayName}</p>
+                  <p>사용자 아이디: {user.displayName || user.uid}</p>
                   {/* 다른 프로필 정보를 표시할 수도 있음 */}
                 </div>
               )}
