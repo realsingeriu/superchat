@@ -1,4 +1,6 @@
 import { initializeApp } from "firebase/app";
+import { GoogleAuthProvider, getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -10,5 +12,12 @@ const firebaseConfig = {
   appId: "1:642692457847:web:7ee3ff150dd65f39a56d72",
 };
 
-// Initialize Firebase
+// 파이어베이스 초기화
 const app = initializeApp(firebaseConfig);
+// 구글인증과 파이어스토어DB
+const googleAuth = new GoogleAuthProvider();
+const db = getFirestore();
+
+const auth = getAuth();
+
+export { auth, googleAuth, db };
