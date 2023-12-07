@@ -3,9 +3,15 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, googleAuth } from "./firebase";
 import { signInWithPopup, signOut } from "firebase/auth";
 import { ChatRoom } from "./ChatRoom";
+import { useState } from "react";
 
 function App() {
   const [user, loading, error] = useAuthState(auth);
+  const [showProfileInfo, setShowProfileInfo] = useState(false);
+  const toggleProfileInfo = () => {
+    setShowProfileInfo(!showProfileInfo);
+  };
+
   console.log(user);
   if (loading) {
     return (
@@ -26,7 +32,38 @@ function App() {
     <div className="App">
       <header>
         <h1>⚛️🔥💬</h1>
-        {user && <SignOut />}
+        {user && (
+          <>
+            <div
+              className="profile-info"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginRight: "10px",
+              }}
+              onMouseEnter={toggleProfileInfo}
+              onMouseLeave={toggleProfileInfo}
+            >
+              <img
+                src={user.photoURL}
+                alt="프로필 사진"
+                style={{
+                  width: "40px",
+                  borderRadius: "50%",
+                  marginRight: "10px",
+                  marginLeft: "200px",
+                }}
+              />
+              {showProfileInfo && (
+                <div className="user-info">
+                  <p>사용자 아이디: {user.displayName}</p>
+                  {/* 다른 프로필 정보를 표시할 수도 있음 */}
+                </div>
+              )}
+            </div>
+            <SignOut />
+          </>
+        )}
       </header>
 
       <section>{user ? <ChatRoom /> : <SignIn />}</section>
