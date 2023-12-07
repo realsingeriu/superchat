@@ -2,6 +2,7 @@ import "./App.css";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, googleAuth } from "./firebase";
 import { signInWithPopup, signOut } from "firebase/auth";
+import { ChatRoom } from "./ChatRoom";
 
 function App() {
   const [user, loading, error] = useAuthState(auth);
@@ -28,7 +29,7 @@ function App() {
         {user && <SignOut />}
       </header>
 
-      <section>{user ? <div>채팅룸</div> : <SignIn />}</section>
+      <section>{user ? <ChatRoom /> : <SignIn />}</section>
     </div>
   );
 }
