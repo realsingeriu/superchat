@@ -85,11 +85,12 @@ function ChatMessage(props) {
 
   // createdAt을 표시할 형식으로 포맷팅
   const formattedTime = createdAt
-    ? new Date(createdAt.seconds * 1000).toLocaleTimeString()
+    ? new Date(createdAt.seconds * 1000).toLocaleString()
     : "";
 
   return (
     <>
+      <p className="Date">({formattedTime})</p>
       <div className={`message ${messageClass}`}>
         <img
           src={
@@ -97,7 +98,7 @@ function ChatMessage(props) {
           }
         />
         <p>
-          <strong>{displayName}</strong>: {text} ({formattedTime})
+          <strong>{displayName}</strong>: {text}
         </p>
       </div>
     </>
